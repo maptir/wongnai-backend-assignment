@@ -1,0 +1,28 @@
+version: '3.0'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./src/data/test_file.csv:/test/test_file.csv
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    restart: always
+    container_name: test-db
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+
+  server:
+    build: .
+    container_name: test-server
+    ports:
+      - 8888:8080
+    depends_on:
+      - db
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./package.json:/usr/src/app/package.json
+      - ./tsconfig.json:/usr/src/app/tsconfig.json
+    restart: always

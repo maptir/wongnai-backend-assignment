@@ -1,0 +1,18 @@
+CREATE DATABASE Wongnai;
+
+ALTER DATABASE Wongnai CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE Wongnai;
+
+CREATE TABLE IF NOT EXISTS Reviews
+(
+  reviewID INT,
+  review TEXT
+);
+
+LOAD DATA LOCAL INFILE "/test/test_file.csv"
+INTO TABLE Reviews
+COLUMNS TERMINATED BY ';'
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES;
