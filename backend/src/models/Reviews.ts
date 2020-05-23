@@ -1,16 +1,12 @@
-import { Model, Column, Table, PrimaryKey, AutoIncrement } from 'sequelize-typescript'
+import { Model, Column, Table, PrimaryKey, DataType } from 'sequelize-typescript'
 
 @Table
 class Reviews extends Model<Reviews> {
   @PrimaryKey
-  @AutoIncrement
-  @Column
-  id!: number
-
   @Column
   reviewID!: number
 
-  @Column
+  @Column(DataType.TEXT)
   review!: string
 }
 

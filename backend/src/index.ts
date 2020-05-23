@@ -22,8 +22,6 @@ const sequelize = new Sequelize({
   },
 })
 
-// sequelize.sync({ alter: true })
-
 app.use('/reviews', reviewsRouter)
 
 app.listen(port, () => {

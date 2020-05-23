@@ -6,8 +6,9 @@ USE Wongnai;
 
 CREATE TABLE IF NOT EXISTS Reviews
 (
-  reviewID INT,
-  review TEXT
+  reviewID INT NOT NULL,
+  review TEXT,
+  PRIMARY KEY (reviewID)
 );
 
 LOAD DATA LOCAL INFILE "/test/test_file.csv"
