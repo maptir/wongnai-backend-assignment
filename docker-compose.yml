@@ -4,9 +4,9 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - ./db:/var/lib/mysql
-      - ./src/data/test_file.csv:/test/test_file.csv
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./backend/db:/var/lib/mysql
+      - ./backend/src/data/test_file.csv:/test/test_file.csv
+      - ./backend/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     restart: always
     container_name: test-db
     ports:
@@ -15,14 +15,28 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
 
   server:
-    build: .
+    build: ./backend
     container_name: test-server
     ports:
       - 8888:8080
     depends_on:
       - db
     volumes:
-      - ./src:/usr/src/app/src
-      - ./package.json:/usr/src/app/package.json
-      - ./tsconfig.json:/usr/src/app/tsconfig.json
+      - ./backend/src:/usr/src/app/src
+      - ./backend/package.json:/usr/src/app/package.json
+      - ./backend/tsconfig.json:/usr/src/app/tsconfig.json
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: test-frontend
+    ports:
+      - 5555:3000
+    stdin_open: true
+    depends_on:
+      - server
+    volumes:
+      - ./frontend/public:/usr/src/app/public
+      - ./frontend/src:/usr/src/app/src
+      - ./frontend/package.json:/usr/src/app/package.json
     restart: always
