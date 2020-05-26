@@ -4,25 +4,25 @@ import ReviewById from './components/ReviewById'
 import SearchReview from './components/SearchReviews'
 import EditReview from './components/EditReview'
 
-const methods = [
-  {
-    id: 0,
-    name: 'Get review by id',
-    component: <ReviewById />,
-  },
-  {
-    id: 1,
-    name: 'Search reviews by food menu',
-    component: <SearchReview />,
-  },
-  {
-    id: 2,
-    name: 'Edit review',
-    component: <EditReview />,
-  },
-]
-
 const App = () => {
+  const methods = [
+    {
+      id: 0,
+      name: 'Get review by id',
+      component: <ReviewById />,
+    },
+    {
+      id: 1,
+      name: 'Search reviews by food menu',
+      component: <SearchReview />,
+    },
+    {
+      id: 2,
+      name: 'Edit review',
+      component: <EditReview />,
+    },
+  ]
+
   const [method, setMethod] = useState(methods[0])
 
   return (

@@ -45,3 +45,12 @@
 .width {
   width: 100%;
 }
+
+.header-review {
+  font-weight: bold;
+}
+
+keyword {
+  color: red;
+  font-weight: bold;
+}

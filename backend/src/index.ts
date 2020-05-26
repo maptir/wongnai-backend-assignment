@@ -1,7 +1,7 @@
 import express from 'express'
 import logger from 'morgan'
 import cors from 'cors'
-import { Sequelize } from 'sequelize-typescript'
+import './db'
 
 import reviewsRouter from './routes/reviews'
 
@@ -11,18 +11,6 @@ const port = process.env.TEST_SERVER_PORT || 8080
 app.use(cors())
 app.use(express.json())
 app.use(logger('dev'))
-
-const sequelize = new Sequelize({
-  database: 'Wongnai',
-  dialect: 'mysql',
-  username: 'root',
-  host: 'test-db',
-  port: 3306,
-  models: [__dirname + '/models'],
-  define: {
-    timestamps: false,
-  },
-})
 
 app.use('/reviews', reviewsRouter)
 

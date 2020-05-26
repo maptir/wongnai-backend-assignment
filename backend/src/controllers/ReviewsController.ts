@@ -1,15 +1,12 @@
 import { Request, Response } from 'express'
 import { Op } from 'sequelize'
 
-import ReviewsRepository from '../repository/ReviewsRepository'
-import FoodDictIndexRepository from '../repository/FoodDictIndexRepository'
 import Reviews from '../models/Reviews'
+import FoodDict from '../FoodDict'
 
-const reviewsRepository: ReviewsRepository = ReviewsRepository.getInstance()
-const foodDictIndexRepository: FoodDictIndexRepository = FoodDictIndexRepository.getInstance()
+const foodDict: FoodDict = FoodDict.getInstance()
 
 export const getReviewById = async (req: Request, res: Response) => {
-  // const reviewFromId = reviewsRepository.getReviewById(req.params.id)
   try {
     const reviewFromId = await Reviews.findOne({ where: { reviewID: req.params.id } })
 
@@ -21,15 +18,22 @@ export const getReviewById = async (req: Request, res: Response) => {
 }
 
 export const searchReviewsByFoodMenu = async (req: Request, res: Response) => {
-  // const reviewsFromQuery = foodDictIndexRepository.searchReviewsByFoodMenu(
-  //   req.query.query.toString()
-  // )
   try {
-    const reviewsFromQuery = await Reviews.findAll({
-      where: { review: { [Op.like]: `%${req.query.query.toString()}%` } },
-    })
+    const query = req.query.query.toString()
 
-    return res.send(reviewsFromQuery).status(200)
+    let reviews = null
+    if (foodDict.validateFoodMenu(query)) {
+      reviews = (
+        await Reviews.findAll({
+          where: { review: { [Op.like]: `%${query.toString()}%` } },
+        })
+      ).map(({ reviewID, review }) => ({
+        reviewID,
+        review: review.replace(new RegExp(query, 'g'), `<keyword>${query}</keyword>`),
+      }))
+    }
+
+    return res.send(reviews).status(200)
   } catch (error) {
     console.log(error)
     return res.sendStatus(404)
