@@ -6,7 +6,7 @@ import './db'
 import reviewsRouter from './routes/reviews'
 
 const app = express()
-const port = process.env.TEST_SERVER_PORT || 8080
+const port = 8080
 
 app.use(cors())
 app.use(express.json())

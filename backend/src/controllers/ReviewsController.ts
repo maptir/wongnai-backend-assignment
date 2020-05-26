@@ -19,18 +19,12 @@ export const getReviewById = async (req: Request, res: Response) => {
 
 export const searchReviewsByFoodMenu = async (req: Request, res: Response) => {
   try {
-    const query = req.query.query.toString()
+    const foodMenu = req.query.query.toString()
 
     let reviews = null
-    if (foodDict.validateFoodMenu(query)) {
-      reviews = (
-        await Reviews.findAll({
-          where: { review: { [Op.like]: `%${query.toString()}%` } },
-        })
-      ).map(({ reviewID, review }) => ({
-        reviewID,
-        review: review.replace(new RegExp(query, 'g'), `<keyword>${query}</keyword>`),
-      }))
+
+    if (foodDict.validateFoodMenu(foodMenu)) {
+      reviews = await Reviews.searchAndHighlightByFoodMenu(foodMenu)
     }
 
     return res.send(reviews).status(200)
